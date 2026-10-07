@@ -1,0 +1,4 @@
+,,n_events,estimate,ci_2.5%,ci_97.5%,share_of_draws_above_0
+weekend,drift difference (BTC>0 minus BTC<=0),91,0.008194535511210223,-0.01622084242822183,0.02990944335550924,0.7695
+weekend,"excess return per event (strategy - benchmark, net)",91,-0.000275489553101717,-0.008050539442303785,0.006469814719846857,0.4815
+weeknight,drift difference (BTC>0 minus BTC<=0),384,-0.003890953185687757,-0.01299970718037058,0.004565989177224238,0.196

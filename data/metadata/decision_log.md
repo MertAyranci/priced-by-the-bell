@@ -22,8 +22,8 @@ outcomes had been viewed at the time. Git commit history provides timestamps.
 | 2026-10-07 | Benchmark: long basket every eligible Monday, 10 bps/side | In-sample | Benchmark (registered) | No |
 | 2026-10-07 | Threshold sensitivities +1%, +2% (signal counts only so far) | In-sample | Pre-declared sensitivity | No |
 
-Note (2026-10-07): first in-sample results were weak for the primary rule (net −18.8% vs benchmark −19.7%).
-Per protocol this does **not** authorise any redesign; the rule stays as registered.
+
+
 
 | 2026-10-07 | Cost scenarios 0/5/10/25/50 bps per side, primary + benchmark | In-sample | Pre-declared sensitivity | No |
 | 2026-10-07 | Threshold +1% and +2% strategies run (in-sample: +3.2% and +14.2% net vs −18.8% primary) | In-sample | Pre-declared sensitivity; NOT adopted | No |
@@ -31,6 +31,10 @@ Per protocol this does **not** authorise any redesign; the rule stays as registe
 | 2026-10-07 | Per-year breakdown 2021/2022/2023 | In-sample | Robustness | No |
 | 2026-10-07 | Monday 09:30–16:00 BTC hindsight diagnostic regression | In-sample | Explanatory only, never a signal | No |
 | 2026-10-07 | Concentration: without best/worst 5 trading days | In-sample | Robustness | No |
+| 2026-10-07 | Single out-of-sample run of the frozen design (main table, costs, thresholds, bootstrap, per-year, diagnostic, concentration) | Out-of-sample 2024–2025 | Final evaluation, run once after freeze commit fec2b54 | Yes (after freeze) |
+
+Note (2026-10-07): first in-sample results were weak for the primary rule (net −18.8% vs benchmark −19.7%).
+Per protocol this does **not** authorise any redesign; the rule stays as registered.
 
 ## Design freeze
 
@@ -39,3 +43,7 @@ Per protocol this does **not** authorise any redesign; the rule stays as registe
 Frozen specification: universe MSTR/MARA/RIOT, equal weights; signal = BTCUSDT completed-candle return from prior 16:00 NY to 09:00 NY; primary rule long if > 0; entry Monday regular Open, exit same-day Close; 10 bps per side base cost; cost scenarios 0/5/10/25/50; sensitivities +1%/+2% reported but not adopted; in-sample 2021–2023, out-of-sample 2024-01-01–2025-12-31; seed 42, 2,000 bootstrap reps.
 
 The +1%/+2% thresholds performed better in-sample; the primary rule was deliberately kept at > 0 as registered. Out-of-sample outcomes had not been computed or viewed at the time of freezing. The out-of-sample run is evaluated once; any later correction will be logged below with the original result.
+
+## Post-freeze record
+
+- 2026-10-07: Out-of-sample evaluation run once after the freeze commit (fec2b54). No code, parameters or data were changed between the freeze and this run. No corrections have been made since.
