@@ -1,0 +1,23 @@
+dataset,issue,count
+btc,"truncated candle 2020-12-21 14:00 UTC (close_time 13:47:20, volume 0) excluded from endpoints",1.0
+btc,"truncated candle 2021-02-11 03:30 UTC (close_time 03:40:54, volume 0) excluded from endpoints",1.0
+btc,"truncated candle 2021-04-25 04:00 UTC (close_time 04:00:58, volume 5.88703) excluded from endpoints",1.0
+btc,"truncated candle 2021-12-24 04:30 UTC (close_time 04:59:54, volume 155.433) excluded from endpoints",1.0
+btc,"truncated candle 2023-03-24 12:30 UTC (close_time 12:39:41, volume 0) excluded from endpoints",1.0
+btc,missing 30m candles in archive (not filled),42.0
+MSTR,sessions missing vs calendar,0.0
+MSTR,rows on non-session dates,0.0
+MSTR,OHLC inconsistent rows,0.0
+MSTR,cash dividend rows,0.0
+MSTR,max |AdjClose/Close - 1|,0.0
+MSTR,stock split 10:1 on 2024-08-08,1.0
+MARA,sessions missing vs calendar,0.0
+MARA,rows on non-session dates,0.0
+MARA,OHLC inconsistent rows,0.0
+MARA,cash dividend rows,0.0
+MARA,max |AdjClose/Close - 1|,0.0
+RIOT,sessions missing vs calendar,0.0
+RIOT,rows on non-session dates,0.0
+RIOT,OHLC inconsistent rows,0.0
+RIOT,cash dividend rows,0.0
+RIOT,max |AdjClose/Close - 1|,0.0

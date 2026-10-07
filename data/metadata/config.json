@@ -1,0 +1,63 @@
+{
+  "universe": [
+    "MSTR",
+    "MARA",
+    "RIOT"
+  ],
+  "weights": {
+    "MSTR": 0.3333333333333333,
+    "MARA": 0.3333333333333333,
+    "RIOT": 0.3333333333333333
+  },
+  "btc_source": {
+    "exchange": "Binance spot public archive (data.binance.vision)",
+    "pair": "BTCUSDT",
+    "interval": "30m",
+    "base_url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/30m/",
+    "first_month": "2020-12",
+    "last_month": "2025-12"
+  },
+  "equity_source": {
+    "provider": "yfinance Ticker.history",
+    "interval": "1d",
+    "auto_adjust": false,
+    "actions": true,
+    "start": "2020-12-01",
+    "end_exclusive": "2026-01-01"
+  },
+  "calendar": "NYSE via pandas_market_calendars (MSTR/MARA/RIOT are Nasdaq-listed; regular sessions coincide)",
+  "sample": [
+    "2021-01-01",
+    "2025-12-31"
+  ],
+  "periods": {
+    "in_sample": [
+      "2021-01-01",
+      "2023-12-31"
+    ],
+    "out_of_sample": [
+      "2024-01-01",
+      "2025-12-31"
+    ]
+  },
+  "signal_start": "16:00 NY on the prior full session (Friday for weekends)",
+  "signal_cutoff_ny": "09:00",
+  "entry_exit": "regular-session Open -> same-day regular-session Close",
+  "threshold": 0.0,
+  "sensitivity_thresholds": [
+    0.01,
+    0.02
+  ],
+  "base_cost_bps_per_side": 10,
+  "cost_scenarios_bps": [
+    0,
+    5,
+    10,
+    25,
+    50
+  ],
+  "candle_close_tolerance_seconds": 1,
+  "seed": 42,
+  "bootstrap_reps": 2000,
+  "cash_return": 0.0
+}
