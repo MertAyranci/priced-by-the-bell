@@ -39,6 +39,7 @@ outcomes had been viewed at the time. Git commit history provides timestamps.
 
 | 2026-10-08 | Random-selection benchmark: signal's trade count drawn at random from eligible Mondays, 10,000 draws, seed 42, same costs/fills (in-sample 60/128 → 37th pct; OOS 53/91 → 76th pct) | Both | Post-freeze robustness; interpretation only | Yes |
 
+
 Note (2026-10-07): first in-sample results were weak for the primary rule (net −18.8% vs benchmark −19.7%).
 Per protocol this does **not** authorise any redesign; the rule stays as registered.
 
