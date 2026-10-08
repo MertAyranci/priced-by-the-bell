@@ -33,6 +33,10 @@ outcomes had been viewed at the time. Git commit history provides timestamps.
 | 2026-10-07 | Concentration: without best/worst 5 trading days | In-sample | Robustness | No |
 | 2026-10-07 | Single out-of-sample run of the frozen design (main table, costs, thresholds, bootstrap, per-year, diagnostic, concentration) | Out-of-sample 2024–2025 | Final evaluation, run once after freeze commit fec2b54 | Yes (after freeze) |
 
+| 2026-10-08 | Look-ahead check reimplemented as bounded binary search (TruncatedCandles, `hi` argument, no slicing); covers all 1,195 eligible events instead of 150; returns and signals asserted identical; all result CSVs unchanged after rerun; stages re-timed | Both | Post-freeze verification/efficiency change; production signal path unchanged | Yes |
+
+| 2026-10-08 | Look-ahead check reimplemented as bounded binary search (TruncatedCandles, `hi` argument, no slicing); covers all 1,195 eligible events instead of 150; returns and signals asserted identical; all result CSVs unchanged after rerun; stages re-timed (original check 8.28 s → 0.0013 s on the same 150 events) | Both | Post-freeze verification/efficiency change; production signal path unchanged | Yes |
+
 Note (2026-10-07): first in-sample results were weak for the primary rule (net −18.8% vs benchmark −19.7%).
 Per protocol this does **not** authorise any redesign; the rule stays as registered.
 
