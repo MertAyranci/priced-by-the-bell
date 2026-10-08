@@ -38,7 +38,7 @@ outcomes had been viewed at the time. Git commit history provides timestamps.
 | 2026-10-08 | Look-ahead check reimplemented as bounded binary search (TruncatedCandles, `hi` argument, no slicing); covers all 1,195 eligible events instead of 150; returns and signals asserted identical; all result CSVs unchanged after rerun; stages re-timed (original check 8.28 s → 0.0013 s on the same 150 events) | Both | Post-freeze verification/efficiency change; production signal path unchanged | Yes |
 
 | 2026-10-08 | Random-selection benchmark: signal's trade count drawn at random from eligible Mondays, 10,000 draws, seed 42, same costs/fills (in-sample 60/128 → 37th pct; OOS 53/91 → 76th pct) | Both | Post-freeze robustness; interpretation only | Yes |
-
+| 2026-10-08 | Independence check: lag-1 autocorrelation of basket drift vs ±2/√n band (all four series inside: 0.005, −0.006, −0.036, −0.078) | Both | Post-freeze robustness| Yes |
 
 Note (2026-10-07): first in-sample results were weak for the primary rule (net −18.8% vs benchmark −19.7%).
 Per protocol this does **not** authorise any redesign; the rule stays as registered.

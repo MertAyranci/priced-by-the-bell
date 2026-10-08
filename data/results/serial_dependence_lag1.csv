@@ -1,0 +1,5 @@
+period,events,n,drift_autocorr_lag1,noise_band_plus_minus,inside_noise_band
+in_sample,weekend,128,0.004613745430497656,0.17677669529663687,True
+in_sample,weeknight,592,-0.00567916302621858,0.08219949365267865,True
+out_of_sample,weekend,91,-0.03556797819054247,0.20965696734438366,True
+out_of_sample,weeknight,384,-0.0777537662014834,0.10206207261596577,True
