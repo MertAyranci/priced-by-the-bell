@@ -46,4 +46,6 @@ The +1%/+2% thresholds performed better in-sample; the primary rule was delibera
 
 ## Post-freeze record
 
-- 2026-10-07: Out-of-sample evaluation run once after the freeze commit (fec2b54). No code, parameters or data were changed between the freeze and this run. No corrections have been made since.
+- 2026-10-07: Out-of-sample evaluation run once after the freeze commit (fec2b54). Between the freeze and this run, the only changes were setting `OUT_OF_SAMPLE_UNLOCKED = True` and adding the section 8 evaluation cells; no data, parameters, signal or backtest code was changed.
+- 2026-10-08, **correction to the freeze statement above**: the sentence "Out-of-sample outcomes had not been computed or viewed at the time of freezing" overstated the lock. The outcome table (gap and drift for every event, 2021–2025) was computed in the cleaning stage and saved in `data/processed/outcomes.csv` from the first commit (58f6545). Accurate statement: 2024–2025 outcomes were computed and stored, but not displayed, analysed or used in any metric, regression or strategy result before the freeze. The primary rule was registered before any results (in-sample or out-of-sample) were seen.
+- 2026-10-08: Post-freeze robustness analyses added (random-selection benchmark, serial-dependence diagnostics, efficiency re-measurement). These are labelled post-freeze, do not alter the primary rule, and cannot be presented as untouched out-of-sample validation.
