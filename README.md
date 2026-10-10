@@ -1,6 +1,6 @@
 # Priced by the Bell? Bitcoin overnight returns and Monday drift in crypto-exposed equities
 
-Capstone project, Data Structures and Algorithms, Imperial College Business School — YOUR NAME
+Capstone project, Data Structures and Algorithms, Imperial College Business School — Mert Ayranci
 
 Tests whether Bitcoin's return between the prior 16:00 New York equity close and 09:00 the next trading morning
 predicts the open-to-close return of an equal-weight basket of MSTR, MARA and RIOT, and whether a simple
@@ -22,7 +22,7 @@ Requires Python 3.12. From the project folder:
 
 ```bash
 python3.12 -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
+source .venv/bin/activate       
 pip install -r requirements.txt
 jupyter notebook notebook.ipynb
 ```

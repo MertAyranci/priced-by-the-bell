@@ -20,11 +20,7 @@ outcomes had been viewed at the time. Git commit history provides timestamps.
 |---|---|---|---|---|
 | 2026-10-07 | Primary: long basket Monday open→close if BTC(Fri 16:00→Mon 09:00) > 0, 10 bps/side | In-sample | Primary (registered) | No |
 | 2026-10-07 | Benchmark: long basket every eligible Monday, 10 bps/side | In-sample | Benchmark (registered) | No |
-| 2026-10-07 | Threshold sensitivities +1%, +2% (signal counts only so far) | In-sample | Pre-declared sensitivity | No |
-
-
-
-
+| 2026-10-07 | Threshold sensitivities +1%, +2% (signal counts only) | In-sample | Pre-declared sensitivity | No |
 | 2026-10-07 | Cost scenarios 0/5/10/25/50 bps per side, primary + benchmark | In-sample | Pre-declared sensitivity | No |
 | 2026-10-07 | Threshold +1% and +2% strategies run (in-sample: +3.2% and +14.2% net vs −18.8% primary) | In-sample | Pre-declared sensitivity; NOT adopted | No |
 | 2026-10-07 | Bootstrap (paired events, seed 42, 2,000 reps): drift difference and strategy−benchmark excess | In-sample | Uncertainty analysis | No |
@@ -32,16 +28,14 @@ outcomes had been viewed at the time. Git commit history provides timestamps.
 | 2026-10-07 | Monday 09:30–16:00 BTC hindsight diagnostic regression | In-sample | Explanatory only, never a signal | No |
 | 2026-10-07 | Concentration: without best/worst 5 trading days | In-sample | Robustness | No |
 | 2026-10-07 | Single out-of-sample run of the frozen design (main table, costs, thresholds, bootstrap, per-year, diagnostic, concentration) | Out-of-sample 2024–2025 | Final evaluation, run once after freeze commit fec2b54 | Yes (after freeze) |
-
-| 2026-10-08 | Look-ahead check reimplemented as bounded binary search (TruncatedCandles, `hi` argument, no slicing); covers all 1,195 eligible events instead of 150; returns and signals asserted identical; all result CSVs unchanged after rerun; stages re-timed | Both | Post-freeze verification/efficiency change; production signal path unchanged | Yes |
-
 | 2026-10-08 | Look-ahead check reimplemented as bounded binary search (TruncatedCandles, `hi` argument, no slicing); covers all 1,195 eligible events instead of 150; returns and signals asserted identical; all result CSVs unchanged after rerun; stages re-timed (original check 8.28 s → 0.0013 s on the same 150 events) | Both | Post-freeze verification/efficiency change; production signal path unchanged | Yes |
-
 | 2026-10-08 | Random-selection benchmark: signal's trade count drawn at random from eligible Mondays, 10,000 draws, seed 42, same costs/fills (in-sample 60/128 → 37th pct; OOS 53/91 → 76th pct) | Both | Post-freeze robustness; interpretation only | Yes |
-| 2026-10-08 | Independence check: lag-1 autocorrelation of basket drift vs ±2/√n band (all four series inside: 0.005, −0.006, −0.036, −0.078) | Both | Post-freeze robustness| Yes |
+| 2026-10-08 | Independence check: lag-1 autocorrelation of basket drift vs ±2/√n band (all four series inside: 0.005, −0.006, −0.036, −0.078) | Both | Post-freeze robustness; formal tests (Newey–West, block bootstrap) left as next steps | Yes |
+| 2026-10-08 | Network download time measured once (0.98 s per file, ~60 s for 61 files); measurement cell then switched off | — | Efficiency measurement only | — |
 
 Note (2026-10-07): first in-sample results were weak for the primary rule (net −18.8% vs benchmark −19.7%).
 Per protocol this does **not** authorise any redesign; the rule stays as registered.
+
 
 ## Design freeze
 
