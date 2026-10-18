@@ -1,52 +1,58 @@
 # Decision and experiment log
 
-Every design change and every strategy variant run is recorded here, with whether out-of-sample (OOS)
-outcomes had been viewed at the time. Git commit history provides timestamps.
+Every design change and every strategy variant run is recorded here, grouped by project stage and listed in the order they happened. The design freeze is git commit fec2b54.
 
-## Decisions
+## Stage 1: Design decisions (before any results were seen)
 
-| Date | Decision / change | Reason | OOS viewed? | Effect on claims |
-|---|---|---|---|---|
-| 2026-10-07 | Select weekend Bitcoin → Monday open-to-close drift hypothesis (roadmap) | Clear mechanism; feasible scope | No | Hypothesis only |
-| 2026-10-07 | Two periods instead of three: in-sample 2021-01-01–2023-12-31, OOS 2024-01-01–2025-12-31 | Primary rule `x > 0` has no fitted parameter, so a separate validation year has nothing to tune; in-sample used for pipeline debugging and descriptive analysis | No | OOS is the only performance claim |
-| 2026-10-07 | Add weeknight events (prior 16:00 → 09:00 NY, Tue–Fri) as a secondary explanatory comparison | ~5× more observations; tests whether the longer weekend closure matters | No | Explanatory only; not a separate traded strategy |
-| 2026-10-07 | Corporate actions: rely on yfinance split-adjusted OHLC (`auto_adjust=False`); verify Adj Close == Close and the MSTR 10:1 split | yfinance OHLC already split-adjusted; none of the three pays cash dividends (verified: 0 dividend rows, max \|AdjClose/Close−1\| = 0) | No | Gap/drift comparable across split |
-| 2026-10-07 | Truncated Binance candles (close_time > 1 s before boundary; 5 found, all exchange outages) are flagged incomplete and never used as endpoints | Their close is not the price at the boundary; using it would be a stale price | No | 1 weeknight event (2023-03-24) rejected |
-| 2026-10-07 | Statistics: HC3 OLS, Welch t-test, iid paired-event bootstrap (seed 42, 2,000 reps) instead of block bootstrap | Weak serial dependence of weekly events; simpler and defensible at n ≈ 90–130 | No | — |
+| Decision / change | Reason | Out-of-sample viewed? | Effect on claims |
+|---|---|---|---|
+| Select weekend Bitcoin → Monday open-to-close drift hypothesis | Clear mechanism; feasible scope | No | Hypothesis only |
+| Two periods instead of three: in-sample 2021-01-01 to 2023-12-31, out-of-sample 2024-01-01 to 2025-12-31 | The rule `x > 0` has no fitted parameter, so a separate validation year has nothing to tune; in-sample used for pipeline debugging and descriptive analysis | No | Out-of-sample is the only performance claim |
+| Add weeknight events (prior 16:00 → 09:00 NY, Tue–Fri) as a secondary explanatory comparison | About 5× more observations; tests whether the longer weekend closure matters | No | Explanatory only; not a traded strategy |
+| Corporate actions: rely on yfinance split-adjusted OHLC (`auto_adjust=False`); verify Adj Close = Close and the MSTR 10:1 split | yfinance OHLC already split-adjusted; none of the three pays cash dividends (0 dividend rows, max \|AdjClose/Close − 1\| = 0) | No | Gap and drift comparable across the split |
+| Truncated Binance candles (close time > 1 s before boundary; 5 found, all exchange outages) flagged incomplete and never used as endpoints | Their close is not the price at the boundary | No | 1 weeknight event (2023-03-24) rejected |
+| Statistics: OLS with HC3 standard errors, Welch t-test, paired-event bootstrap (seed 42, 2,000 resamples) | Simple and defensible at n ≈ 90–130 | No | — |
 
-## Experiment register
+## Stage 2: In-sample runs (2021–2023)
 
-| Date | Variant | Periods run | Status | OOS viewed? |
-|---|---|---|---|---|
-| 2026-10-07 | Primary: long basket Monday open→close if BTC(Fri 16:00→Mon 09:00) > 0, 10 bps/side | In-sample | Primary (registered) | No |
-| 2026-10-07 | Benchmark: long basket every eligible Monday, 10 bps/side | In-sample | Benchmark (registered) | No |
-| 2026-10-07 | Threshold sensitivities +1%, +2% (signal counts only) | In-sample | Pre-declared sensitivity | No |
-| 2026-10-07 | Cost scenarios 0/5/10/25/50 bps per side, primary + benchmark | In-sample | Pre-declared sensitivity | No |
-| 2026-10-07 | Threshold +1% and +2% strategies run (in-sample: +3.2% and +14.2% net vs −18.8% primary) | In-sample | Pre-declared sensitivity; NOT adopted | No |
-| 2026-10-07 | Bootstrap (paired events, seed 42, 2,000 reps): drift difference and strategy−benchmark excess | In-sample | Uncertainty analysis | No |
-| 2026-10-07 | Per-year breakdown 2021/2022/2023 | In-sample | Robustness | No |
-| 2026-10-07 | Monday 09:30–16:00 BTC hindsight diagnostic regression | In-sample | Explanatory only, never a signal | No |
-| 2026-10-07 | Concentration: without best/worst 5 trading days | In-sample | Robustness | No |
-| 2026-10-07 | Single out-of-sample run of the frozen design (main table, costs, thresholds, bootstrap, per-year, diagnostic, concentration) | Out-of-sample 2024–2025 | Final evaluation, run once after freeze commit fec2b54 | Yes (after freeze) |
-| 2026-10-08 | Look-ahead check reimplemented as bounded binary search (TruncatedCandles, `hi` argument, no slicing); covers all 1,195 eligible events instead of 150; returns and signals asserted identical; all result CSVs unchanged after rerun; stages re-timed (original check 8.28 s → 0.0013 s on the same 150 events) | Both | Post-freeze verification/efficiency change; production signal path unchanged | Yes |
-| 2026-10-08 | Random-selection benchmark: signal's trade count drawn at random from eligible Mondays, 10,000 draws, seed 42, same costs/fills (in-sample 60/128 → 37th pct; OOS 53/91 → 76th pct) | Both | Post-freeze robustness; interpretation only | Yes |
-| 2026-10-08 | Independence check: lag-1 autocorrelation of basket drift vs ±2/√n band (all four series inside: 0.005, −0.006, −0.036, −0.078) | Both | Post-freeze robustness; formal tests (Newey–West, block bootstrap) left as next steps | Yes |
-| 2026-10-08 | Network download time measured once (0.98 s per file, ~60 s for 61 files); measurement cell then switched off | — | Efficiency measurement only | — |
+| Variant | Status |
+|---|---|
+| Primary: long basket Monday open → close if BTC (Fri 16:00 → Mon 09:00) > 0, 10 bps per side | Primary (registered before results) |
+| Benchmark: long basket every eligible Monday, 10 bps per side | Benchmark (registered before results) |
+| Cost scenarios 0 / 5 / 10 / 25 / 50 bps per side, primary and benchmark | Pre-declared sensitivity |
+| Thresholds +1% and +2% (in-sample: +3.2% and +14.2% net vs −18.8% primary) | Pre-declared sensitivity; **not adopted** |
+| Bootstrap: drift difference and strategy − benchmark excess return | Uncertainty analysis |
+| Per-year breakdown 2021 / 2022 / 2023 | Robustness |
+| Monday 09:30–16:00 BTC return regression | Hindsight diagnostic only, never a signal |
+| Concentration: without best / worst 5 trading days | Robustness |
 
-Note (2026-10-07): first in-sample results were weak for the primary rule (net −18.8% vs benchmark −19.7%).
-Per protocol this does **not** authorise any redesign; the rule stays as registered.
+The first in-sample results were weak for the primary rule (net −18.8% vs benchmark −19.7%). Per protocol this did not authorise any redesign; the rule stayed as registered.
 
+## Stage 3: Design freeze (commit fec2b54)
 
-## Design freeze
+Frozen specification: universe MSTR / MARA / RIOT, equal weights; signal = BTCUSDT completed-candle return from prior 16:00 NY to 09:00 NY; primary rule long if > 0; entry at Monday regular Open, exit at same-day Close; 10 bps per side base cost; cost scenarios 0 / 5 / 10 / 25 / 50; sensitivities +1% / +2% reported but not adopted; in-sample 2021–2023, out-of-sample 2024-01-01 to 2025-12-31; seed 42, 2,000 bootstrap resamples.
 
-**Frozen on 2026-10-07** in the commit titled "Design freeze before out-of-sample evaluation".
+The +1% / +2% thresholds performed better in-sample; the primary rule was deliberately kept at > 0 as registered.
 
-Frozen specification: universe MSTR/MARA/RIOT, equal weights; signal = BTCUSDT completed-candle return from prior 16:00 NY to 09:00 NY; primary rule long if > 0; entry Monday regular Open, exit same-day Close; 10 bps per side base cost; cost scenarios 0/5/10/25/50; sensitivities +1%/+2% reported but not adopted; in-sample 2021–2023, out-of-sample 2024-01-01–2025-12-31; seed 42, 2,000 bootstrap reps.
+## Stage 4: Out-of-sample evaluation (2024–2025)
 
-The +1%/+2% thresholds performed better in-sample; the primary rule was deliberately kept at > 0 as registered. Out-of-sample outcomes had not been computed or viewed at the time of freezing. The out-of-sample run is evaluated once; any later correction will be logged below with the original result.
+| Variant | Status |
+|---|---|
+| Single run of the frozen design: main table, costs, thresholds, bootstrap, per-year, diagnostic, concentration | Final evaluation, run once after the freeze |
 
-## Post-freeze record
+Between the freeze and this run, the only changes were setting `OUT_OF_SAMPLE_UNLOCKED = True` and adding the section 8 evaluation cells. No data, parameters, signal or backtest code was changed.
 
-- 2026-10-07: Out-of-sample evaluation run once after the freeze commit (fec2b54). Between the freeze and this run, the only changes were setting `OUT_OF_SAMPLE_UNLOCKED = True` and adding the section 8 evaluation cells; no data, parameters, signal or backtest code was changed.
-- 2026-10-08, **correction to the freeze statement above**: the sentence "Out-of-sample outcomes had not been computed or viewed at the time of freezing" overstated the lock. The outcome table (gap and drift for every event, 2021–2025) was computed in the cleaning stage and saved in `data/processed/outcomes.csv` from the first commit (58f6545). Accurate statement: 2024–2025 outcomes were computed and stored, but not displayed, analysed or used in any metric, regression or strategy result before the freeze. The primary rule was registered before any results (in-sample or out-of-sample) were seen.
-- 2026-10-08: Post-freeze robustness analyses added (random-selection benchmark, serial-dependence diagnostics, efficiency re-measurement). These are labelled post-freeze, do not alter the primary rule, and cannot be presented as untouched out-of-sample validation.
+**Correction to the original freeze statement.** An earlier version of this log said that out-of-sample outcomes "had not been computed or viewed" at the freeze. That overstated the lock. The outcome table (gap and drift for every event, 2021–2025) is computed in the cleaning stage and was saved in `data/processed/outcomes.csv` from the first commit. Accurate statement: 2024–2025 outcomes were computed and stored, but not displayed, analysed or used in any metric, regression or strategy result before the freeze. The primary rule was registered before any results were seen.
+
+## Stage 5: Post-freeze checks (after out-of-sample results were seen)
+
+These are labelled post-freeze. They do not change the primary rule and are not untouched out-of-sample validation.
+
+| Check | Result | Status |
+|---|---|---|
+| Look-ahead check reimplemented as bounded binary search (`TruncatedCandles`, `hi` argument, no slicing); now covers all 1,195 eligible events instead of 150 | Returns and signals identical; all result files unchanged; check time 8.28 s → 0.0013 s on the same 150 events | Verification / efficiency change; signal path unchanged |
+| Random-selection benchmark: the signal's trade count drawn at random from eligible Mondays, 10,000 draws, seed 42 | In-sample 60/128 → 37th percentile; out-of-sample 53/91 → 76th percentile | Interpretation only |
+| Independence check: lag-1 autocorrelation of basket drift vs ±2/√n band | All four series inside (0.005, −0.006, −0.036, −0.078); does not rule out longer-lag dependence | Interpretation only; formal tests left as next steps |
+| Network download time measured once | About 1 s per monthly file, about 60 s for 61 files; measurement cell then switched off | Efficiency measurement only |
+| Naive-scan timing re-measured with a sample spread across the whole period (first version used only the earliest dates) | About 15 s estimated for all lookups, instead of 1.9 s | Measurement correction |
+| Equity cleaning and backtest made to stop on non-positive or inconsistent prices | No such rows exist; results unchanged | Safeguard only |
