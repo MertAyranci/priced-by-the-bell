@@ -17,6 +17,7 @@ Paths are relative to the project root.
 - `calendar_snapshot.csv`: NYSE regular sessions with open and close times in UTC and New York time, plus a full-session flag.
 - `data_quality_log.csv`: truncated or missing candles, coverage checks and corporate actions.
 - `decision_log.md`: design decisions, the experiment register and the design-freeze record.
+- `requirements.txt`: exact Python package versions used (Python 3.12).
 
 ## processed/
 - `signal_inputs.csv`: one row per candidate entry day with its Bitcoin endpoints, eligibility and exclusion reason (predictors only).

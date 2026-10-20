@@ -1,10 +1,10 @@
 stage,seconds,complexity
-"Look-ahead check, ORIGINAL rebuild (150 events)",8.531232749985065,O(K·B)
-Event alignment (hash-map build + lookups),0.2534070409601554,O(B + W)
-BTC parse + clean (incl. sort),0.24850941699696705,O(B log B)
-"Correctness checks cell (current, all events)",0.10177366697462276,includes O(K log B) check
-"Backtest: in-sample, 2 strategies, gross + net",0.07522262498969212,O(D + T·N)
-"Truncated-view preprocessing (filter + lists), once",0.04812945798039436,O(B)
-BTC acquire/verify (cached; SHA-256 of 61 files),0.04223449999699369,O(total bytes)
-"Bootstrap 2,000 reps (in-sample weekends)",0.029719040961936116,O(R·W)
-"Look-ahead check, bounded bisect (150 events)",0.001233680658818533,O(K log B)
+"Look-ahead check, ORIGINAL rebuild (150 events)",7.798998249985743,O(K·B)
+BTC parse + clean (incl. sort),0.23549379204632714,O(B log B)
+Event alignment (hash-map build + lookups),0.20878220902523026,O(B + W)
+"Correctness checks cell (current, all events)",0.09085679095005617,includes O(K log B) check
+"Backtest: in-sample, 2 strategies, gross + net",0.06827799999155104,O(D + T·N)
+"Truncated-view preprocessing (filter + lists), once",0.04410641599679366,O(B)
+"Bootstrap 2,000 reps (in-sample weekends)",0.02873941697180271,O(R·W)
+BTC acquire/verify (cached; SHA-256 of 61 files),0.027935582969803363,O(total bytes)
+"Look-ahead check, bounded bisect (150 events)",0.0012449306668713689,O(K log B)
